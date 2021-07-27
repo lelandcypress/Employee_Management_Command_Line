@@ -8,35 +8,18 @@ WHEN I choose to view all departments
 THEN I am presented with a formatted table showing department names and department ids
 
 
-SELECT * FROM departments;
-
-
-WHEN I choose to view all roles
-THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-
-
-
-SELECT role.title AS 'Job Title', role.id as'Role ID', department.name AS 'Department', role.salary AS 'Salary'
-FROM role
-INNER JOIN department
-ON role.department_id = department.id;
 
 
 
 
-WHEN I choose to view all employees
-THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
-SOLUTION: JOIN EMPLOYEE, ROLE, Manager, and Department
 
 
-SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
-FROM employee
-INNER JOIN role
-ON employee.role_id = role.id
-INNER JOIN department
-ON role.department_id = department.id
-INNER JOIN manager
-ON employee.manager_id = manager.id;
+
+
+
+
+
+
 
 
 

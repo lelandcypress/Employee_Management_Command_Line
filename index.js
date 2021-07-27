@@ -1,3 +1,7 @@
 const inquirer = require("inquirer");
-const sql = require("mysql2");
-const cTable = require("console.table");
+
+const { selectAllEmployees } = require("./query");
+
+selectAllEmployees();
+
+//inquirer.prompt([{}]);

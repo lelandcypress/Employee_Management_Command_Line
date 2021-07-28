@@ -1,16 +1,7 @@
-const sql = require("mysql2");
+const { db, sql } = require("./connection/connection");
 const mysql = require("mysql2/promise");
 const cTable = require("console.table");
 const promise = require("bluebird");
-
-const db = sql.createConnection({
-  host: "localhost",
-  // MySQL Username
-  user: "root",
-
-  password: "password",
-  database: "employee_db",
-});
 
 const selectAllEmployees = () =>
   db
@@ -61,10 +52,41 @@ const employeeByManager = (manager) =>
     }
   );
 
+const budgetAll = () =>
+  db.query(
+    ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
+FROM department
+INNER JOIN role
+ON department.id = role.department_id
+INNER JOIN employee
+ON employee.role_id = role.id
+GROUP BY department.name;`,
+    function (err, results) {
+      console.table(results);
+    }
+  );
+
+const budgetByDept = (dept) =>
+  db.query(
+    ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
+FROM department
+INNER JOIN role
+ON department.id = role.department_id
+INNER JOIN employee
+ON employee.role_id = role.id
+WHERE department.name =?;`,
+    dept,
+    function (err, results) {
+      console.table(results);
+    }
+  );
+
 module.exports = {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
   employeeByDept,
   employeeByManager,
+  budgetAll,
+  budgetByDept,
 };

@@ -8,6 +8,8 @@ const {
   selectAllRoles,
   employeeByDept,
   employeeByManager,
+  budgetAll,
+  budgetByDept,
 } = require("./query");
 
 const initInquirer = () =>
@@ -47,6 +49,8 @@ const initInquirer = () =>
         departmentMenu();
       } else if (data.navMenu === "View Employees by Manager") {
         managerMenu();
+      } else if (data.navMenu === "View Department Budget") {
+        budgetMenu();
       }
     });
 
@@ -75,7 +79,8 @@ const departmentMenu = () => {
       {
         type: "list",
         name: "Departments",
-        choices: ["Accounting", "Marketing", "Operations", "Development", "QA"],
+        message: "Select Department",
+        choices: ["Accounting", "Marketing", "Operations", "Development"],
       },
     ])
     .then((data) => {
@@ -89,6 +94,7 @@ const managerMenu = () => {
       {
         type: "list",
         name: "Managers",
+        message: "Select Manager",
         choices: [
           "Carson Wentz",
           "Michael Scott",
@@ -99,6 +105,31 @@ const managerMenu = () => {
     ])
     .then((data) => {
       employeeByManager(data.Managers);
+    });
+};
+
+const budgetMenu = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "Budget",
+        message: "Select Department",
+        choices: [
+          "View All",
+          "Accounting",
+          "Marketing",
+          "Operations",
+          "Development",
+        ],
+      },
+    ])
+    .then((data) => {
+      if (data.Budget === "View All") {
+        budgetAll();
+      } else {
+        budgetByDept(data.Budget);
+      }
     });
 };
 

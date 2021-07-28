@@ -48,9 +48,23 @@ const employeeByDept = (dept) =>
     }
   );
 
+const employeeByManager = (manager) =>
+  db.query(
+    ` SELECT  concat(manager.first_name,' ',manager.last_name) AS 'Manager', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name'  
+    FROM employee
+    INNER JOIN manager
+    ON employee.manager_id = manager.id
+    WHERE concat(manager.first_name,' ',manager.last_name) = ?;`,
+    manager,
+    function (err, results) {
+      console.table(results);
+    }
+  );
+
 module.exports = {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
   employeeByDept,
+  employeeByManager,
 };

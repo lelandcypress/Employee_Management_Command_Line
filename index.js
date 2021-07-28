@@ -6,6 +6,8 @@ const {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
+  employeeByDept,
+  employeeByManager,
 } = require("./query");
 
 const initInquirer = () =>
@@ -41,11 +43,12 @@ const initInquirer = () =>
         selectAllDepartments();
       } else if (data.navMenu === "View all Roles") {
         selectAllRoles();
-      }else if(data.navMenu === "View Employees by Department"){
-          departmentMenu()
+      } else if (data.navMenu === "View Employees by Department") {
+        departmentMenu();
+      } else if (data.navMenu === "View Employees by Manager") {
+        managerMenu();
       }
-    })
-    
+    });
 
 const mainMenu = () => {
   inquirer
@@ -66,14 +69,39 @@ const mainMenu = () => {
     });
 };
 
-const departmentMenu =()=>{
-    inquirer.prompt([{
-        type:'list',
-        name:'departmentMenu',
-        choices: ['Accounting', 'Marketing','Operations','Development','QA']
-    }])
-} 
+const departmentMenu = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "Departments",
+        choices: ["Accounting", "Marketing", "Operations", "Development", "QA"],
+      },
+    ])
+    .then((data) => {
+      employeeByDept(data.Departments);
+    });
+};
+
+const managerMenu = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "Managers",
+        choices: [
+          "Carson Wentz",
+          "Michael Scott",
+          "Jimmy Schmidtz",
+          "Jenny Gump",
+        ],
+      },
+    ])
+    .then((data) => {
+      employeeByManager(data.Managers);
+    });
+};
 
 initInquirer();
 
-module.exports = mainMenu
+module.exports = mainMenu;

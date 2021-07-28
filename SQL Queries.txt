@@ -64,19 +64,10 @@ WHERE employee.id = PH
     FROM employee
     INNER JOIN manager
     ON employee.manager_id = manager.id
-    WHERE concat(manager.first_name,' ',manager.last_name) = 'PH'     
-    ORDER BY manager.id;
+    WHERE concat(manager.first_name,' ',manager.last_name) = 'Carson Wentz';
 
 
-* Application allows users to view employees by department (2 points).
 
- SELECT  department.name AS 'Department', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name', role.title AS 'Job Title'
-    FROM employee
-    INNER JOIN role
-    ON employee.role_id = role.id
-    INNER JOIN department
-    ON role.department_id = department.id
-    WHERE department.name = PH;
 
          
     

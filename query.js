@@ -4,19 +4,52 @@ const cTable = require("console.table");
 const promise = require("bluebird");
 
 const selectAllEmployees = () =>
-  db
-    .query(
-      "SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id INNER JOIN manager ON employee.manager_id = manager.id;",
-      function (err, results) {
-        console.table(results);
-      }
-    )
-    .then(() => mainMenu());
+  db.query(
+    `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
+    FROM employee 
+    INNER JOIN role 
+    ON employee.role_id = role.id 
+    INNER JOIN department 
+    ON role.department_id = department.id 
+    INNER JOIN manager 
+    ON employee.manager_id = manager.id;`,
+    function (err, results) {
+      console.table(results);
+    }
+  );
 
 const selectAllDepartments = () =>
   db.query("SELECT * FROM department;", function (err, results) {
     console.table(results);
   });
+
+const addDepartment = (dept) =>
+  db.query(
+    `INSERT INTO department(name)
+VALUES (?)`,
+    dept,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Department Added");
+      }
+    }
+  );
+
+const deleteDepartment = (dept) =>
+  db.query(
+    `DELETE FROM department
+    WHERE department.name =?`,
+    dept,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Department Deleted");
+      }
+    }
+  );
 
 const selectAllRoles = () =>
   db.query(
@@ -89,4 +122,6 @@ module.exports = {
   employeeByManager,
   budgetAll,
   budgetByDept,
+  addDepartment,
+  deleteDepartment,
 };

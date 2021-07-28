@@ -10,6 +10,8 @@ const {
   employeeByManager,
   budgetAll,
   budgetByDept,
+  addDepartment,
+  deleteDepartment,
 } = require("./query");
 
 const initInquirer = () =>
@@ -45,10 +47,14 @@ const initInquirer = () =>
         selectAllDepartments();
       } else if (data.navMenu === "View all Roles") {
         selectAllRoles();
+      } else if (data.navMenu === "Add a Department") {
+        enterDept();
       } else if (data.navMenu === "View Employees by Department") {
         departmentMenu();
       } else if (data.navMenu === "View Employees by Manager") {
         managerMenu();
+      } else if (data.navMenu === "Delete Department") {
+        removeDept();
       } else if (data.navMenu === "View Department Budget") {
         budgetMenu();
       }
@@ -70,6 +76,35 @@ const mainMenu = () => {
         console.log("Have a nice day!");
         return;
       }
+    });
+};
+const enterDept = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter Department Name",
+        name: "AddDept",
+      },
+    ])
+    .then((data) => {
+      console.log(data.AddDept);
+      addDepartment(data.AddDept);
+    });
+};
+
+const removeDept = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter Department Name",
+        name: "DelDept",
+      },
+    ])
+    .then((data) => {
+      console.log(data.DelDept);
+      deleteDepartment(data.DelDept);
     });
 };
 

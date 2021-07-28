@@ -41,8 +41,12 @@ const initInquirer = () =>
         selectAllDepartments();
       } else if (data.navMenu === "View all Roles") {
         selectAllRoles();
+      }else if(data.navMenu === "View Employees by Department"){
+          departmentMenu()
       }
-    });
+    })
+    
+
 const mainMenu = () => {
   inquirer
     .prompt([
@@ -62,4 +66,14 @@ const mainMenu = () => {
     });
 };
 
+const departmentMenu =()=>{
+    inquirer.prompt([{
+        type:'list',
+        name:'departmentMenu',
+        choices: ['Accounting', 'Marketing','Operations','Development','QA']
+    }])
+} 
+
 initInquirer();
+
+module.exports = mainMenu

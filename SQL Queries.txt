@@ -1,11 +1,5 @@
 GIVEN a command-line application that accepts user input
-WHEN I start the application
-THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
-Set up Inquirer
-
-WHEN I choose to view all departments
-THEN I am presented with a formatted table showing department names and department ids
 
 
 
@@ -26,7 +20,6 @@ THEN I am presented with a formatted table showing department names and departme
 
 WHEN I choose to add a department
 THEN I am prompted to enter the name of the department and that department is added to the database
-SOLUTION: Build Insert Statement
 
 INSERT INTO department(name)
 VALUES ('Placeholder');

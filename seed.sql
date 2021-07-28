@@ -14,9 +14,9 @@ VALUES ('Lead Accountant', 5000.00, 1),
 ('Software Engineer', 75000.00,4),
 ('Senior Developer', 95000.00,4),
 ('Database Analyst', 90000.00,4),
-('QA Engineer', 70000.00,5),
-('Lead Tester', 85000.00,5),
-('DevOps Engineer', 70000.00,5);
+('QA Engineer', 70000.00,4),
+('Lead Tester', 85000.00,4),
+('DevOps Engineer', 70000.00,4);
 
 
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
@@ -28,13 +28,13 @@ VALUES ('Matthew','Smith', 1, 1),
 ('Gregory','Alex', 6, 4),
 ('Ellen','Sydney', 7, 4),
 ('Elizabeth','Andrew', 8, 4),
-('Michael','Connelly', 9, 5),
-('Chris','Hemsbroke', 10, 5),
-('Luke','Searunner', 11, 5);
+('Michael','Connelly', 9, 4),
+('Chris','Hemsbroke', 10, 4),
+('Luke','Searunner', 11, 4);
 
 INSERT INTO manager(first_name,last_name, department_id)
 VALUES('Carson', 'Wentz', 1),
 ('Michael','Scott',2),
 ('Jimmy','Schmidtz',3),
-('Jenny','Gump',4),
-('Luis','Alfred',5);
+('Jenny','Gump',4);
+

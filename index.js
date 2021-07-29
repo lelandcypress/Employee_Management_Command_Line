@@ -17,8 +17,11 @@ const {
   budgetByDept,
   addDepartment,
   deleteDepartment,
+  deleteEmployee,
+  deleteRole,
 } = require("./query");
 
+//Main Menu//
 const initInquirer = () =>
   inquirer
     .prompt([
@@ -44,6 +47,7 @@ const initInquirer = () =>
         ],
       },
     ])
+    //Evaluates User Selection and runs functions
     .then((data) => {
       switch (data.navMenu) {
         case "View all Employees":
@@ -79,12 +83,19 @@ const initInquirer = () =>
           break;
         case "Delete Department":
           removeDept();
+          break;
+        case "Delete Role":
+          removeRole();
+          break;
+        case "Delete Employee":
+          removeEmp();
+          break;
         case "View Department Budget":
           budgetMenu();
           break;
       }
     });
-
+//Updates Employee Job Title//
 const enterNewRole = () => {
   inquirer
     .prompt([
@@ -104,6 +115,7 @@ const enterNewRole = () => {
       updateEmpRole(role, empId);
     });
 };
+//Adds New Department//
 const enterDept = () => {
   inquirer
     .prompt([
@@ -118,7 +130,7 @@ const enterDept = () => {
       addDepartment(data.AddDept);
     });
 };
-
+//Adds New Role//
 const buildRole = () => {
   inquirer
     .prompt([
@@ -142,7 +154,7 @@ const buildRole = () => {
       addRole(data.Title, data.Salary, data.Department);
     });
 };
-
+//Deletes Department//
 const removeDept = () => {
   inquirer
     .prompt([
@@ -157,7 +169,7 @@ const removeDept = () => {
       deleteDepartment(data.DelDept);
     });
 };
-
+//Main Menu for department budgets//
 const departmentMenu = () => {
   inquirer
     .prompt([
@@ -172,7 +184,7 @@ const departmentMenu = () => {
       employeeByDept(data.Departments);
     });
 };
-
+//Employee by Manager window//
 const managerMenu = () => {
   inquirer
     .prompt([
@@ -192,7 +204,7 @@ const managerMenu = () => {
       employeeByManager(data.Managers);
     });
 };
-
+//Updates Manager//
 const enterManager = () => {
   inquirer
     .prompt([
@@ -209,7 +221,7 @@ const enterManager = () => {
       updateManager(manager, empID);
     });
 };
-
+//Budget by department//
 const budgetMenu = () => {
   inquirer
     .prompt([
@@ -234,7 +246,7 @@ const budgetMenu = () => {
       }
     });
 };
-
+//Adds new employee//
 buildEmployee = () => {
   inquirer
     .prompt([
@@ -250,6 +262,34 @@ buildEmployee = () => {
     .then((data) => {
       ({ firstName, lastName, role, manager } = data);
       addEmployee(firstName, lastName, role, manager);
+    });
+};
+//Deletes Employee//
+removeEmp = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "EmpId",
+        message: "Enter Employee ID",
+      },
+    ])
+    .then((data) => {
+      deleteEmployee(data.EmpId);
+    });
+};
+//Deletes Role//
+removeRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "RoleName",
+        message: "Specify Which Role",
+      },
+    ])
+    .then((data) => {
+      deleteRole(data.RoleName);
     });
 };
 

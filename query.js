@@ -3,7 +3,7 @@ const cTable = require("console.table");
 const initInquirer = require("./index");
 //Reference All Queries below//
 
-//
+//Display all Employees Query//
 const selectAllEmployees = () =>
   db.query(
     `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
@@ -22,12 +22,12 @@ const selectAllEmployees = () =>
       }
     }
   );
-
+//Display all Departments Query//
 const selectAllDepartments = () =>
   db.query("SELECT * FROM department;", function (err, results) {
     console.table(results);
   });
-
+//Add Employee Query//
 const addEmployee = (first, last, role, manager) =>
   db.query(
     `INSERT INTO employee(first_name,last_name,role_id,manager_id)
@@ -45,7 +45,7 @@ WHERE concat(manager.first_name,' ',manager.last_name) = ?));`,
       }
     }
   );
-
+//Add New Department Query//
 const addDepartment = (dept) =>
   db.query(
     `INSERT INTO department(name)
@@ -59,7 +59,7 @@ VALUES (?)`,
       }
     }
   );
-
+//Adds New Role Query/
 const addRole = (name, salary, dept) =>
   db.query(
     `INSERT INTO role(title,salary,department_id)
@@ -73,7 +73,7 @@ VALUES (?,?,(SELECT id from department WHERE department.name = ?));`,
       }
     }
   );
-
+//Update Manager Query//
 const updateManager = (manager, employee) => {
   db.query(
     `UPDATE employee
@@ -89,7 +89,7 @@ WHERE employee.id = ?;`,
     }
   );
 };
-
+//Update Employee Role Query
 const updateEmpRole = (role, employee) => {
   db.query(
     `UPDATE employee
@@ -105,7 +105,7 @@ WHERE employee.id = ?;`,
     }
   );
 };
-
+//Deletes department Query//
 const deleteDepartment = (dept) =>
   db.query(
     `DELETE FROM department
@@ -119,7 +119,7 @@ const deleteDepartment = (dept) =>
       }
     }
   );
-
+//Display all roles Query//
 const selectAllRoles = () =>
   db.query(
     "SELECT role.title AS 'Job Title', role.id as'Role ID', department.name AS 'Department', role.salary AS 'Salary' FROM role INNER JOIN department ON role.department_id = department.id;",
@@ -127,7 +127,7 @@ const selectAllRoles = () =>
       console.table(results);
     }
   );
-
+//Employee by Department Query//
 const employeeByDept = (dept) =>
   db.query(
     `SELECT department.name AS 'Department', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name', role.title AS 'Job Title' FROM employee INNER JOIN role
@@ -140,7 +140,7 @@ const employeeByDept = (dept) =>
       console.table(results);
     }
   );
-
+//Employee by Manager Query//
 const employeeByManager = (manager) =>
   db.query(
     ` SELECT  concat(manager.first_name,' ',manager.last_name) AS 'Manager', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name'  
@@ -153,7 +153,7 @@ const employeeByManager = (manager) =>
       console.table(results);
     }
   );
-
+//Budget by All Departments Query//
 const budgetAll = () =>
   db.query(
     ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
@@ -167,7 +167,7 @@ GROUP BY department.name;`,
       console.table(results);
     }
   );
-
+//Budget by Department Query//
 const budgetByDept = (dept) =>
   db.query(
     ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
@@ -180,6 +180,34 @@ WHERE department.name =?;`,
     dept,
     function (err, results) {
       console.table(results);
+    }
+  );
+//Delete Employee Query//
+const deleteEmployee = (emp) =>
+  db.query(
+    `DELETE FROM employee
+    WHERE employee.id =?`,
+    emp,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Employee Deleted");
+      }
+    }
+  );
+//Delete Role Query//
+const deleteRole = (title) =>
+  db.query(
+    `DELETE FROM role
+    WHERE role.title =?`,
+    title,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Job Deleted");
+      }
     }
   );
 
@@ -197,4 +225,6 @@ module.exports = {
   budgetByDept,
   addDepartment,
   deleteDepartment,
+  deleteEmployee,
+  deleteRole,
 };

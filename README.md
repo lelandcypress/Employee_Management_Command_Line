@@ -21,10 +21,16 @@ Once code is copied, ensure you have all appropriate node packages installed (np
 ## Usage
 
 1. Upon initializing the application, the user will be presented with a main menu.
-   [screenshot]
+
+   ![Main Menu](Pics/menu.PNG)
+
 2. User will have a variety of options to leverage SQL queries to manipulate the database.
-   [screenshot]
-3. All main menu items are functional,so users are encourages to see all features.
+
+   ![Employee dislay](Pics/employees.PNG)
+
+3. All main menu items are functional,so users are encouraged to see all features.
+
+   ![Budget Query](Pics/budget.PNG)
 
 4. Upon completion User can open MySQL navigate to employee_db and compare results.
 

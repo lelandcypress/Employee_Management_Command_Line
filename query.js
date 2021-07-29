@@ -3,7 +3,7 @@ const cTable = require("console.table");
 const initInquirer = require("./index");
 
 const selectAllEmployees = () =>
-  db.promise().query(
+  db.query(
     `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
     FROM employee 
     INNER JOIN role 
@@ -44,8 +44,47 @@ const addRole = (name, salary, dept) =>
   db.query(
     `INSERT INTO role(title,salary,department_id)
 VALUES (?,?,(SELECT id from department WHERE department.name = ?));`,
-    name
+    [name, salary, dept],
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Role Added");
+      }
+    }
   );
+
+const updateManager = (manager, employee) => {
+  db.query(
+    `UPDATE employee
+SET manager_id = (SELECT id FROM manager WHERE concat(manager.first_name,' ',manager.last_name) = ? )
+WHERE employee.id = ?;`,
+    [manager, employee],
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Manager Updated");
+      }
+    }
+  );
+};
+
+const updateEmpRole = (role, employee) => {
+  db.query(
+    `UPDATE employee
+SET role_id = (SELECT id FROM role WHERE title = ?)
+WHERE employee.id = ?;`,
+    [role, employee],
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Role Updated");
+      }
+    }
+  );
+};
 
 const deleteDepartment = (dept) =>
   db.query(
@@ -129,6 +168,9 @@ module.exports = {
   selectAllDepartments,
   selectAllRoles,
   employeeByDept,
+  addRole,
+  updateEmpRole,
+  updateManager,
   employeeByManager,
   budgetAll,
   budgetByDept,

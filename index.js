@@ -1,11 +1,15 @@
 const { listenerCount } = require("events");
 const { prompt } = require("inquirer");
 const inquirer = require("inquirer");
+const { title } = require("process");
 
 const {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
+  addRole,
+  updateEmpRole,
+  updateManager,
   employeeByDept,
   employeeByManager,
   budgetAll,
@@ -50,11 +54,21 @@ const initInquirer = () =>
         case "View all Roles":
           selectAllRoles();
           break;
+        case "Add a Role":
+          buildRole();
+          break;
+        case "Update Employee Role":
+          enterNewRole();
+          break;
         case "Add a Department":
           enterDept();
           break;
+
         case "View Employees by Department":
           departmentMenu();
+          break;
+        case "Update Manager":
+          enterManager();
           break;
         case "View Employees by Manager":
           managerMenu();
@@ -67,8 +81,25 @@ const initInquirer = () =>
       }
     });
 
-
-
+const enterNewRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter new role",
+        name: "role",
+      },
+      {
+        type: "input",
+        message: "Enter Employee ID",
+        name: "empId",
+      },
+    ])
+    .then((data) => {
+      ({ role, empId } = data);
+      updateEmpRole(role, empId);
+    });
+};
 const enterDept = () => {
   inquirer
     .prompt([
@@ -81,6 +112,30 @@ const enterDept = () => {
     .then((data) => {
       console.log(data.AddDept);
       addDepartment(data.AddDept);
+    });
+};
+
+const buildRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "Title",
+        message: "Enter the role tile",
+      },
+      {
+        type: "input",
+        name: "Salary",
+        message: "Enter annual salary",
+      },
+      {
+        type: "input",
+        name: "Department",
+        message: "Enter valid department",
+      },
+    ])
+    .then((data) => {
+      addRole(data.Title, data.Salary, data.Department);
     });
 };
 
@@ -131,6 +186,23 @@ const managerMenu = () => {
     ])
     .then((data) => {
       employeeByManager(data.Managers);
+    });
+};
+
+const enterManager = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "empID",
+        message: "Enter Employee ID",
+      },
+      { type: "input", name: "manager", message: "Enter New Manager" },
+    ])
+    .then((data) => {
+      ({ empID, manager } = data);
+
+      updateManager(manager, empID);
     });
 };
 

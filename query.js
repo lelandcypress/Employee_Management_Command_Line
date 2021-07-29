@@ -1,10 +1,9 @@
 const { db, sql } = require("./connection/connection");
-const mysql = require("mysql2/promise");
 const cTable = require("console.table");
-const promise = require("bluebird");
+const initInquirer = require("./index");
 
 const selectAllEmployees = () =>
-  db.query(
+  db.promise().query(
     `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
     FROM employee 
     INNER JOIN role 
@@ -14,7 +13,11 @@ const selectAllEmployees = () =>
     INNER JOIN manager 
     ON employee.manager_id = manager.id;`,
     function (err, results) {
-      console.table(results);
+      if (err) {
+        console.error(err);
+      } else {
+        console.table(results);
+      }
     }
   );
 
@@ -35,6 +38,13 @@ VALUES (?)`,
         console.log("Department Added");
       }
     }
+  );
+
+const addRole = (name, salary, dept) =>
+  db.query(
+    `INSERT INTO role(title,salary,department_id)
+VALUES (?,?,(SELECT id from department WHERE department.name = ?));`,
+    name
   );
 
 const deleteDepartment = (dept) =>

@@ -40,44 +40,35 @@ const initInquirer = () =>
       },
     ])
     .then((data) => {
-      console.log(data.navMenu);
-      if (data.navMenu === "View all Employees") {
-        selectAllEmployees();
-      } else if (data.navMenu === "View all Departments") {
-        selectAllDepartments();
-      } else if (data.navMenu === "View all Roles") {
-        selectAllRoles();
-      } else if (data.navMenu === "Add a Department") {
-        enterDept();
-      } else if (data.navMenu === "View Employees by Department") {
-        departmentMenu();
-      } else if (data.navMenu === "View Employees by Manager") {
-        managerMenu();
-      } else if (data.navMenu === "Delete Department") {
-        removeDept();
-      } else if (data.navMenu === "View Department Budget") {
-        budgetMenu();
+      switch (data.navMenu) {
+        case "View all Employees":
+          selectAllEmployees();
+          break;
+        case "View all Departments":
+          selectAllDepartments();
+          break;
+        case "View all Roles":
+          selectAllRoles();
+          break;
+        case "Add a Department":
+          enterDept();
+          break;
+        case "View Employees by Department":
+          departmentMenu();
+          break;
+        case "View Employees by Manager":
+          managerMenu();
+          break;
+        case "Delete Department":
+          removeDept();
+        case "View Department Budget":
+          budgetMenu();
+          break;
       }
     });
 
-const mainMenu = () => {
-  inquirer
-    .prompt([
-      {
-        type: "confirm",
-        name: "continue",
-        message: "return to main menu?",
-      },
-    ])
-    .then((data) => {
-      if (data.continue) {
-        initInquirer();
-      } else {
-        console.log("Have a nice day!");
-        return;
-      }
-    });
-};
+
+
 const enterDept = () => {
   inquirer
     .prompt([
@@ -169,5 +160,3 @@ const budgetMenu = () => {
 };
 
 initInquirer();
-
-module.exports = mainMenu;

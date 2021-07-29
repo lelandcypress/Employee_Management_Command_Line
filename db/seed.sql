@@ -31,7 +31,7 @@ VALUES ('Matthew','Smith', 1, 1),
 ('Michael','Connelly', 9, 4),
 ('Chris','Hemsbroke', 10, 4),
 ('Luke','Searunner', 11, 4);
-
+('Testy','McTestface', 11, 4);
 INSERT INTO manager(first_name,last_name, department_id)
 VALUES('Carson', 'Wentz', 1),
 ('Michael','Scott',2),

@@ -1,7 +1,9 @@
 const { db, sql } = require("./connection/connection");
 const cTable = require("console.table");
 const initInquirer = require("./index");
+//Reference All Queries below//
 
+//
 const selectAllEmployees = () =>
   db.query(
     `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', concat(manager.first_name,' ',manager.last_name) AS'Manager'
@@ -25,6 +27,24 @@ const selectAllDepartments = () =>
   db.query("SELECT * FROM department;", function (err, results) {
     console.table(results);
   });
+
+const addEmployee = (first, last, role, manager) =>
+  db.query(
+    `INSERT INTO employee(first_name,last_name,role_id,manager_id)
+VALUES(?,?,(SELECT id 
+FROM role 
+WHERE role.title = ?),(SELECT id
+FROM manager
+WHERE concat(manager.first_name,' ',manager.last_name) = ?));`,
+    [first, last, role, manager],
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Employee Added");
+      }
+    }
+  );
 
 const addDepartment = (dept) =>
   db.query(
@@ -167,6 +187,7 @@ module.exports = {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
+  addEmployee,
   employeeByDept,
   addRole,
   updateEmpRole,

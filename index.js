@@ -7,6 +7,7 @@ const {
   selectAllEmployees,
   selectAllDepartments,
   selectAllRoles,
+  addEmployee,
   addRole,
   updateEmpRole,
   updateManager,
@@ -53,6 +54,9 @@ const initInquirer = () =>
           break;
         case "View all Roles":
           selectAllRoles();
+          break;
+        case "Add an Employee":
+          buildEmployee();
           break;
         case "Add a Role":
           buildRole();
@@ -228,6 +232,24 @@ const budgetMenu = () => {
       } else {
         budgetByDept(data.Budget);
       }
+    });
+};
+
+buildEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Enter First Name",
+      },
+      { type: "input", name: "lastName", message: "Enter Last Name" },
+      { type: "input", name: "role", message: "Enter Job Title" },
+      { type: "input", name: "manager", message: "Enter Manager" },
+    ])
+    .then((data) => {
+      ({ firstName, lastName, role, manager } = data);
+      addEmployee(firstName, lastName, role, manager);
     });
 };
 

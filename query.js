@@ -1,6 +1,85 @@
 const { db, sql } = require("./connection/connection");
 const cTable = require("console.table");
-const initInquirer = require("./index");
+const { prompt } = require("inquirer");
+const inquirer = require("inquirer");
+require("./index");
+
+// propmt main menu (not the best practice because it is not following the DRY methods - however it is like putting a band-aid on it for temp fix)
+
+//Main Menu//
+const menuCall = () =>
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "navMenu",
+        message: "Welcome! Please Select Option",
+        choices: [
+          "View all Employees",
+          "View all Departments",
+          "View all Roles",
+          "Add a Department",
+          "Add a Role",
+          "Add an Employee",
+          "Update Employee Role",
+          "Update Manager",
+          "View Employees by Manager",
+          "View Employees by Department",
+          "Delete Department",
+          "Delete Role",
+          "Delete Employee",
+          "View Department Budget",
+        ],
+      },
+    ])
+    //Evaluates User Selection and runs functions
+    .then((data) => {
+      switch (data.navMenu) {
+        case "View all Employees":
+          selectAllEmployees();
+          break;
+        case "View all Departments":
+          selectAllDepartments();
+          break;
+        case "View all Roles":
+          selectAllRoles();
+          break;
+        case "Add an Employee":
+          buildEmployee();
+          break;
+        case "Add a Role":
+          buildRole();
+          break;
+        case "Update Employee Role":
+          enterNewRole();
+          break;
+        case "Add a Department":
+          enterDept();
+          break;
+
+        case "View Employees by Department":
+          departmentMenu();
+          break;
+        case "Update Manager":
+          enterManager();
+          break;
+        case "View Employees by Manager":
+          managerMenu();
+          break;
+        case "Delete Department":
+          removeDept();
+          break;
+        case "Delete Role":
+          removeRole();
+          break;
+        case "Delete Employee":
+          removeEmp();
+          break;
+        case "View Department Budget":
+          budgetMenu();
+          break;
+      }
+    });
 //Reference All Queries below//
 
 //Display all Employees Query//
@@ -19,6 +98,7 @@ const selectAllEmployees = () =>
         console.error(err);
       } else {
         console.table(results);
+        menuCall();
       }
     }
   );
@@ -26,6 +106,7 @@ const selectAllEmployees = () =>
 const selectAllDepartments = () =>
   db.query("SELECT * FROM department;", function (err, results) {
     console.table(results);
+    menuCall();
   });
 //Add Employee Query//
 const addEmployee = (first, last, role, manager) =>
@@ -42,6 +123,7 @@ WHERE concat(manager.first_name,' ',manager.last_name) = ?));`,
         console.log(err);
       } else {
         console.log("Employee Added");
+        menuCall();
       }
     }
   );
@@ -56,6 +138,7 @@ VALUES (?)`,
         console.log(err);
       } else {
         console.log("Department Added");
+        menuCall();
       }
     }
   );
@@ -70,6 +153,7 @@ VALUES (?,?,(SELECT id from department WHERE department.name = ?));`,
         console.log(err);
       } else {
         console.log("Role Added");
+        menuCall();
       }
     }
   );
@@ -85,6 +169,7 @@ WHERE employee.id = ?;`,
         console.log(err);
       } else {
         console.log("Manager Updated");
+        menuCall();
       }
     }
   );
@@ -101,6 +186,7 @@ WHERE employee.id = ?;`,
         console.log(err);
       } else {
         console.log("Role Updated");
+        menuCall();
       }
     }
   );
@@ -116,6 +202,7 @@ const deleteDepartment = (dept) =>
         console.log(err);
       } else {
         console.log("Department Deleted");
+        menuCall();
       }
     }
   );
@@ -125,6 +212,7 @@ const selectAllRoles = () =>
     "SELECT role.title AS 'Job Title', role.id as'Role ID', department.name AS 'Department', role.salary AS 'Salary' FROM role INNER JOIN department ON role.department_id = department.id;",
     function (err, results) {
       console.table(results);
+      menuCall();
     }
   );
 //Employee by Department Query//
@@ -138,6 +226,7 @@ const employeeByDept = (dept) =>
     dept,
     function (err, results) {
       console.table(results);
+      menuCall();
     }
   );
 //Employee by Manager Query//
@@ -151,6 +240,7 @@ const employeeByManager = (manager) =>
     manager,
     function (err, results) {
       console.table(results);
+      menuCall();
     }
   );
 //Budget by All Departments Query//
@@ -165,6 +255,7 @@ ON employee.role_id = role.id
 GROUP BY department.name;`,
     function (err, results) {
       console.table(results);
+      menuCall();
     }
   );
 //Budget by Department Query//
@@ -180,6 +271,7 @@ WHERE department.name =?;`,
     dept,
     function (err, results) {
       console.table(results);
+      menuCall();
     }
   );
 //Delete Employee Query//
@@ -193,6 +285,7 @@ const deleteEmployee = (emp) =>
         console.log(err);
       } else {
         console.log("Employee Deleted");
+        menuCall();
       }
     }
   );
@@ -207,6 +300,7 @@ const deleteRole = (title) =>
         console.log(err);
       } else {
         console.log("Job Deleted");
+        menuCall();
       }
     }
   );
@@ -227,4 +321,5 @@ module.exports = {
   deleteDepartment,
   deleteEmployee,
   deleteRole,
+  menuCall,
 };

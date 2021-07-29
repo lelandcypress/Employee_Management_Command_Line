@@ -19,6 +19,7 @@ const {
   deleteDepartment,
   deleteEmployee,
   deleteRole,
+  menuCall,
 } = require("./query");
 
 //Main Menu//

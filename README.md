@@ -20,7 +20,7 @@ Once code is copied, ensure you have all appropriate node packages installed (np
 
 ## Usage
 
-See video walkthrough: 
+See video walkthrough: https://drive.google.com/file/d/1Os5kVp-Dcp7qsu87vPqMja8LJyG22PCS/view
 
 ## License
 

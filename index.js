@@ -20,7 +20,7 @@ const {
   deleteEmployee,
   deleteRole,
   menuCall,
-} = require("./query");
+} = require("./db/query");
 
 //Main Menu//
 const initInquirer = () =>
@@ -45,6 +45,7 @@ const initInquirer = () =>
           "Delete Role",
           "Delete Employee",
           "View Department Budget",
+          "Quit",
         ],
       },
     ])
@@ -94,6 +95,10 @@ const initInquirer = () =>
         case "View Department Budget":
           budgetMenu();
           break;
+        case "Quit":
+          console.log('Goodbye')
+          process.exit();
+      
       }
     });
 //Updates Employee Job Title//

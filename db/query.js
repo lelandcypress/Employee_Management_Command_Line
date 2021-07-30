@@ -1,8 +1,8 @@
-const { db, sql } = require("./connection/connection");
+const { db, sql } = require("./connection");
 const cTable = require("console.table");
 const { prompt } = require("inquirer");
 const inquirer = require("inquirer");
-require("./index");
+require("../index");
 
 // propmt main menu (not the best practice because it is not following the DRY methods - however it is like putting a band-aid on it for temp fix)
 
@@ -29,6 +29,7 @@ const menuCall = () =>
           "Delete Role",
           "Delete Employee",
           "View Department Budget",
+          "Quit",
         ],
       },
     ])
@@ -78,6 +79,9 @@ const menuCall = () =>
         case "View Department Budget":
           budgetMenu();
           break;
+        case "Quit":
+          console.log("Goodbye");
+          process.exit();
       }
     });
 //Reference All Queries below//

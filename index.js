@@ -26,7 +26,7 @@ const initInquirer = () =>
           //"View Employees by Department",
           "Delete Department",
           "Delete Role",
-          //"Delete Employee",
+          "Delete Employee",
           //"View Department Budget",
           "Quit",
         ],
@@ -65,7 +65,9 @@ const initInquirer = () =>
         case "Delete Role":
           removeRole();
           break;
-
+        case "Delete Employee":
+          removeEmp();
+          break;
         case "Quit":
           console.log("Goodbye");
           process.exit();
@@ -364,13 +366,38 @@ async function removeRole() {
     const chosenRole = await inquirer.prompt([
       {
         type: "list",
-        name: "roles",
+        name: "choice",
         message: "Please Select Role",
         choices: roleArray,
       },
     ]);
     const select = chosenRole.choice;
+    console.log(select);
     methods.deleteRole(select);
+  } catch (err) {
+    console.log(err);
+  }
+  initInquirer();
+}
+
+async function removeEmp() {
+  try {
+    let empArray = [];
+    const methods = new DBMethods();
+    let employees = await methods.viewEmps();
+    employees = employees[0];
+    employees.forEach((element) => empArray.push(element.Name));
+
+    const removeMe = await inquirer.prompt([
+      {
+        type: "list",
+        name: "badEE",
+        message: "Please Select Employee",
+        choices: empArray,
+      },
+    ]);
+    const unluckyEE = removeMe.badEE;
+    methods.deleteEmployee(unluckyEE);
   } catch (err) {
     console.log(err);
   }

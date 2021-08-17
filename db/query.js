@@ -94,11 +94,9 @@ WHERE employee.id = ?;`,
   }
 
   deleteRole(name) {
-    return this.db.promise().query(
-      `DELETE FROM role
-    WHERE role.title =?`,
-      name
-    );
+    return this.db
+      .promise()
+      .query(`DELETE FROM role WHERE role.title =?`, [name]);
   }
 
   employeeByManager() {
@@ -135,10 +133,11 @@ WHERE employee.id = ?;`,
     );
   }
 
-  deleteEmployee() {
-    return this.connection.query(
+  deleteEmployee(name) {
+    return this.db.promise().query(
       `DELETE FROM employee
-            WHERE employee.id =?;`
+            WHERE concat(first_name,' ',last_name) =?; `,
+      name
     );
   }
 

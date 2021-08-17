@@ -10,4 +10,4 @@ const db = sql.createConnection({
 db.connect(function (err) {
   if (err) throw err;
 });
-module.exports = { sql, db };
+module.exports = db;

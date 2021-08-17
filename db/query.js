@@ -85,9 +85,20 @@ WHERE employee.id = ?;`,
       [role, employee]
     );
   }
-  deleteDepartment() {
-    return this.connection.query(`DELETE FROM department
-    WHERE department.name =?`);
+  deleteDepartment(dep) {
+    return this.db.promise().query(
+      `DELETE FROM department
+    WHERE department.name =?`,
+      dep
+    );
+  }
+
+  deleteRole(name) {
+    return this.db.promise().query(
+      `DELETE FROM role
+    WHERE role.title =?`,
+      name
+    );
   }
 
   employeeByManager() {
@@ -131,12 +142,6 @@ WHERE employee.id = ?;`,
     );
   }
 
-  deleteRole() {
-    return this.connection.query(
-      `DELETE FROM role
-              WHERE role.title =?;`
-    );
-  }
   employeeByDept() {
     return this.db.promise().query(
       `SELECT department.name AS 'Department', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name', role.title AS 'Job Title' FROM employee INNER JOIN role

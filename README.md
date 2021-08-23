@@ -24,7 +24,7 @@ See video walkthrough: https://drive.google.com/file/d/1Os5kVp-Dcp7qsu87vPqMja8L
 
 ## License
 
-None
+![MIT License](https://img.shields.io/badge/License-MIT-brightgreen)
 
 ## Contribution
 

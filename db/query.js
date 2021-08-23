@@ -99,37 +99,39 @@ WHERE employee.id = ?;`,
       .query(`DELETE FROM role WHERE role.title =?`, [name]);
   }
 
-  employeeByManager() {
-    return this.connection.query(
+  employeeByManager(man) {
+    return this.db.promise().query(
       ` SELECT  concat(manager.first_name,' ',manager.last_name) AS 'Manager', concat(employee.first_name,' ',employee.last_name) AS 'Name'  
       FROM employee
       INNER JOIN manager
       ON employee.manager_id = manager.id
-      WHERE concat(manager.first_name,' ',manager.last_name) = ?;`
+      WHERE concat(manager.first_name,' ',manager.last_name) = ?;`,
+      man
     );
   }
 
   budgetAll() {
-    return this.connection.query(
+    return this.db.promise().query(
       ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
         FROM department
-        INNER JOIN role
+        LEFT JOIN role
         ON department.id = role.department_id
-        INNER JOIN employee
+        LEFT JOIN employee
         ON employee.role_id = role.id
         GROUP BY department.name;`
     );
   }
 
-  budgetByDept() {
-    return this.connection.query(
+  budgetByDept(dep) {
+    return this.db.promise().query(
       ` SELECT DISTINCT department.name AS 'Department', SUM(role.salary) AS 'Staff Budget'
           FROM department
           INNER JOIN role
           ON department.id = role.department_id
           INNER JOIN employee
           ON employee.role_id = role.id
-          WHERE department.name =?;`
+          WHERE department.name =?;`,
+      dep
     );
   }
 
@@ -141,14 +143,14 @@ WHERE employee.id = ?;`,
     );
   }
 
-  employeeByDept() {
+  employeeByDept(dep) {
     return this.db.promise().query(
       `SELECT department.name AS 'Department', concat(employee.first_name,' ',employee.last_name) AS 'Employee Name', role.title AS 'Job Title' FROM employee INNER JOIN role
       ON employee.role_id = role.id
       INNER JOIN department
       ON role.department_id = department.id
       WHERE department.name = ?;`,
-      "QA"
+      dep
     );
   }
 }

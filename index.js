@@ -1,6 +1,4 @@
 const DBMethods = require("./db/query");
-const { listenerCount } = require("events");
-const { prompt } = require("inquirer");
 const inquirer = require("inquirer");
 const { title } = require("process");
 const db = require("./db/connection");
@@ -22,12 +20,12 @@ const initInquirer = () =>
           "Add an Employee",
           "Update Employee Role",
           "Update Manager",
-          //"View Employees by Manager",
-          //"View Employees by Department",
+          "View Employees by Manager",
+          "View Employees by Department",
           "Delete Department",
           "Delete Role",
           "Delete Employee",
-          //"View Department Budget",
+          "View Department Budget",
           "Quit",
         ],
       },
@@ -67,6 +65,15 @@ const initInquirer = () =>
           break;
         case "Delete Employee":
           removeEmp();
+          break;
+        case "View Department Budget":
+          displayBudget();
+          break;
+        case "View Employees by Department":
+          empByDep();
+          break;
+        case "View Employees by Manager":
+          empByMan();
           break;
         case "Quit":
           console.log("Goodbye");
@@ -402,6 +409,85 @@ async function removeEmp() {
     console.log(err);
   }
   initInquirer();
+}
+
+async function displayBudget() {
+  try {
+    depArray = [];
+    const methods = await new DBMethods();
+    let departments = await methods.viewDep();
+    departments = departments[0];
+    departments.forEach((element) => depArray.push(element.name));
+    depArray.push("View Total Budget");
+    const selectdep = await inquirer.prompt([
+      {
+        type: "list",
+        name: "menu",
+        message: "Please Select department",
+        choices: depArray,
+      },
+    ]);
+    if (selectdep.menu === "View Total Budget") {
+      let totalBudget = await methods.budgetAll();
+      totalBudget = totalBudget[0];
+      console.table(totalBudget);
+    } else {
+      const budget = selectdep.menu;
+      let result = await methods.budgetByDept(budget);
+      const spread = result[0];
+      console.table({ ...spread });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  initInquirer();
+}
+
+async function empByDep() {
+  try {
+    depArray = [];
+    const methods = await new DBMethods();
+    let departments = await methods.viewDep();
+    departments = departments[0];
+    departments.forEach((element) => depArray.push(element.name));
+    let departmentChoice = await inquirer.prompt([
+      {
+        type: "list",
+        name: "choice",
+        message: "Please Select department",
+        choices: depArray,
+      },
+    ]);
+    let selection = departmentChoice.choice;
+    let query = await methods.employeeByDept(selection);
+    console.table(query[0]);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function empByMan() {
+  try {
+    let managerArray = [];
+    const methods = await new DBMethods();
+    let manager = await methods.selectManager();
+    manager = manager[0];
+    manager.forEach((element) => managerArray.push(element.name));
+    const managerSelection = await inquirer.prompt([
+      {
+        type: "list",
+        message: "Select Manager",
+        name: "EEMan",
+        choices: managerArray,
+      },
+    ]);
+    let selection = managerSelection.EEMan;
+    console.table(selection);
+    let query = await methods.employeeByManager(selection);
+    console.table(query[0]);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 initInquirer();

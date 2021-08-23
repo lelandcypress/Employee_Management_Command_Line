@@ -464,6 +464,7 @@ async function empByDep() {
   } catch (err) {
     console.log(err);
   }
+  initInquirer();
 }
 
 async function empByMan() {
@@ -488,6 +489,7 @@ async function empByMan() {
   } catch (err) {
     console.log(err);
   }
+  initInquirer();
 }
 
 initInquirer();
